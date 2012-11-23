@@ -1,5 +1,5 @@
 --[[
-	* Copyright © 2011-2012 xjm (xiejianming@gmail.com)
+    * Copyright © 2011-2012 xjm (xiejianming@gmail.com)
     *
     * License: MIT license(http://www.opensource.org/licenses/mit-license.html), 
     * just same as Lua(http://www.lua.org/)
