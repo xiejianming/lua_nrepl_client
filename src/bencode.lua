@@ -7,9 +7,22 @@
 
 module("bencode",package.seeall)
 
+-- redefine functio 'type' so that we can use it to detect our 'list' and 'dictionary'
+local _type=type
+function type(v)
+	local mtbl=getmetatable(v)
+	if mtbl then
+		local typef=mtbl["__type"]
+		if typef then
+			return typef(v)		
+		end
+	end
+	return _type(v)
+end
+
 -- ******************** enconding *********************************
 function ben(item)
-	local tp=type(item)
+	local tp=lib.type(item)
 	local res
 	if tp=="string" then
 		return ""..#item..":"..item

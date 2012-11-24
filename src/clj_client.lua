@@ -8,6 +8,7 @@
 module("clj_client",package.seeall)
 
 local b=require("bencode")
+local lib=require("comlib")
 
 function start_clj_client(host,port)
 	local socket=require("socket")
@@ -71,7 +72,7 @@ function start_clj_client(host,port)
 	-- to handle special commands
 	local function special_cmd(cmd)
 		if cmd=="" then -- equals to "!" cmd
-			print_table(opts)
+			lib.print_table(opts)
 		elseif cmd=="showraw" or cmd=="shownaked" then
 			opts[cmd]=not opts[cmd]
 		elseif string.sub(cmd,1,8)=="timeout " then
@@ -102,7 +103,7 @@ function start_clj_client(host,port)
 		else
 			-- evalute as Lua code
 			if string.sub(cmd,1,1)=="=" then
-				cmd="smart_print("..string.sub(cmd,2)..")"
+				cmd="lib.smart_print("..string.sub(cmd,2)..")"
 			end
 			local f,err=loadstring(cmd)
 			if err then
@@ -120,7 +121,7 @@ function start_clj_client(host,port)
 	while true do
 		io.write(ns.."=>: ")
 		input=io.read()
-		trimed=trim(input)
+		trimed=lib.trim(input)
 		if trimed=="!q" then
 			cnn:send("d"..session.."2:op5:closee")
 			cnn:close()
@@ -315,4 +316,12 @@ function get_versions(msgs)
 			return msgs[i]["versions"]
 		end
 	end
+end
+
+function trim(s)
+    return s:match("^%s*(.*)"):match("(.-)%s*$")
+end
+
+function print_table(t)
+    for k,v in pairs(t) do print(k,v) end
 end
