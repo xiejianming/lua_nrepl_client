@@ -8,7 +8,6 @@
 module("clj_client",package.seeall)
 
 local b=require("bencode")
-local lib=require("comlib")
 
 function start_clj_client(host,port)
 	local socket=require("socket")
@@ -72,7 +71,7 @@ function start_clj_client(host,port)
 	-- to handle special commands
 	local function special_cmd(cmd)
 		if cmd=="" then -- equals to "!" cmd
-			lib.print_table(opts)
+			print_table(opts)
 		elseif cmd=="showraw" or cmd=="shownaked" then
 			opts[cmd]=not opts[cmd]
 		elseif string.sub(cmd,1,8)=="timeout " then
@@ -103,7 +102,7 @@ function start_clj_client(host,port)
 		else
 			-- evalute as Lua code
 			if string.sub(cmd,1,1)=="=" then
-				cmd="lib.smart_print("..string.sub(cmd,2)..")"
+				cmd="print("..string.sub(cmd,2)..")"
 			end
 			local f,err=loadstring(cmd)
 			if err then
@@ -121,7 +120,7 @@ function start_clj_client(host,port)
 	while true do
 		io.write(ns.."=>: ")
 		input=io.read()
-		trimed=lib.trim(input)
+		trimed=trim(input)
 		if trimed=="!q" then
 			cnn:send("d"..session.."2:op5:closee")
 			cnn:close()
